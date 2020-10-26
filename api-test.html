@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>接口测试</title>
+    <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+    <style>
+        .header {
+            border-radius: 5px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="width: 60%; position: relative; top: 50px; left: 20%;">
+        <div style="width: 100%; text-align: center;">
+            <select name="type" id="type" class="header" style="height: 30px;">
+                <option value="GET">GET</option>
+                <option value="POST">POST</option>
+            </select>
+            <input id="url" class="header" type="text" placeholder="url:" style="width: 50%; height: 24px;">
+            <button class="header" onclick="submitData()"
+                style="height: 30px; background-color: #5cb85c; color: #ffffff;">开始请求</button>
+        </div>
+        <div style="width: 100%; display: flex; margin-top: 20px; justify-content: space-around;">
+            <div class="header" style="width: 47%; height: 500px; border: 1px solid #3883fa; text-align: center;">
+                <div style="width: 100%; background-color: #3883fa; color: #ffffff;">请求参数</div>
+                <textarea name="params" id="params" style="width: 97%; height: 472px; border: 0;"
+                    placeholder="json:"></textarea>
+            </div>
+            <div class="header" style="width: 47%; height: 500px; border: 1px solid #ff3c3c; text-align: center;">
+                <div style="width: 100%; background-color: #ff3c3c; color: #ffffff;">返回数据</div>
+                <div style="width: 100%; word-break: break-all; overflow-y: auto;" id="backData"></div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function submitData() {
+        let type = $('#type').val(),
+            url = $('#url').val(),
+            params = $('#params').val(),
+            data = params;
+
+        if (params) {
+            try {
+                data = type == "GET" ? JSON.parse(params) : $('#params').val();
+            } catch {
+                alert('请求参数格式不正确, 请按以下规范填写: {"id":123}');
+                return;
+            }
+        }
+        if (url != '' && url != ' ') {
+            $.ajax({
+                url,
+                type,
+                data,
+                dataType: 'string',
+                success: (res) => {
+                    $("#backData").html(res);
+                }
+            })
+        } else {
+            alert("请输入请求地址");
+        }
+    }
+</script>
+
+</html>
